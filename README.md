@@ -24,6 +24,16 @@ NAMESPACE will be `torrent`, SCRIPT_ROOT will be `$HOME/torrentns`, and TRANSMIS
 # Set your own transmission preferences 
 via copying the `transmission_config` to `$HOME/.config/transmission-daemon/`
 
+# Disable default transmission daemon to start
+We need to disable default transmission daemon to start, otherwise it messes up with our configuration.
+Edit the file `/etc/default/transmission-daemon` and change the following:
+```
+ENABLE_DAEMON=1
+```
+to this:
+```
+ENABLE_DAEMON=0
+```
 
 # Add script to run on RaspberryPI/Debian/Ubuntu/OtherLinuxDistros after system boots
 Add the following line to `/etc/crontab` as root
