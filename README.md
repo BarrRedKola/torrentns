@@ -15,7 +15,7 @@ BRIDGE=netns_bridge
 Run `./bootstrap.sh` to install the necessary dependencies.
 
 # For VPN
-Create an `auth.txt` in the SCRIPT_ROOT as well as in SCRIPT_ROOT/nordVPN to make sure.
+Create an `auth.txt` in the `$SCRIPT_ROOT` as well as in `$SCRIPT_ROOT/nordVPN` to be sure.
 This file should contain your nordVPN username and password; each in one line below each other and nothing else, e.g.:
 ```
 myNordVPNuser
