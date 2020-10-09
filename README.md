@@ -35,6 +35,13 @@ to this:
 ENABLE_DAEMON=0
 ```
 
+Sometimes the above not works, so we have to completely eliminate transmission-daemon to start!
+First, try this:
+```
+systemctl disable transmission-daemon
+```
+If, for any reason, it still does not work, get rid of all transmission-daemon related services from `/etc/rc*.d/` by removing the relevant files.
+
 # Add script to run on RaspberryPI/Debian/Ubuntu/OtherLinuxDistros after system boots
 Add the following line to `/etc/crontab` as root
 ```
