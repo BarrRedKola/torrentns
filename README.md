@@ -1,5 +1,5 @@
 # torrentns
-Scripts for firing up linux network namespace and run transmission server and openvpn within it.
+Scripts for firing up a linux network namespace and run transmission server with openvpn inside.
 
 # Before usage
 Update source/extra.sh to specify different constant variables
