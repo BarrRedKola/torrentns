@@ -2,10 +2,17 @@
 Scripts for firing up a linux network namespace and run transmission server with openvpn inside.
 
 # Before usage
-Update source/extra.sh to specify different constant variables
+Update `source/extra.sh` to specify different constant variables if we want to use different ones.
+They are in the first couple of lines of `extra.sh`.
+```
+#const variables, we don't have to change their values
+VETH_ROOT=veth_root
+VETH_NS=veth_ns
+BRIDGE=netns_bridge
+```
 
-# Bootstrap
-Run `./bootstrap.sh` to install the necessary dependencies
+# Installing dependencies
+Run `./bootstrap.sh` to install the necessary dependencies.
 
 # For VPN
 Create an `auth.txt` in the SCRIPT_ROOT as well as in SCRIPT_ROOT/nordVPN to make sure.
