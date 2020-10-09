@@ -50,9 +50,9 @@ systemctl disable transmission-daemon
 If, for any reason, it still does not work, get rid of all transmission-daemon related services from `/etc/rc*.d/` by removing the relevant files.
 
 # Add script to run on RaspberryPI/Debian/Ubuntu/OtherLinuxDistros after system boots
-Add the following line to `/etc/crontab` as root
+Add the following line to `/etc/crontab` as root assuming your `$SCRIPT_ROOT` is under your user's HOME directory.
 ```
-@reboot  root cd /home/ryzen/torrentns && /home/<YOURUSER>/torrentns/run_torrent_ns.sh -p <SCRIPT_ROOT> -n <NAMESPACE> -t <TRANSMISSION_CONFIG> &
+@reboot  root cd /home/<YOURUSER>/torrentns && /home/<YOURUSER>/torrentns/run_torrent_ns.sh -p /home/<YOURUSER>/torrentns -n <NAMESPACE> -t /home/<YOURUSER>/.config/transmission-daemon &
 ```
 Update path if required!
 
