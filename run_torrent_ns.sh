@@ -70,9 +70,10 @@ fi
 
 
 
-c_print "White" "Dismiss previous starts..."
-sudo $SCRIPT_ROOT/dismiss_netns.sh -p $SCRIPT_ROOT -n $NETNS
-c_print "BGreen" "[DONE]"
+#this somehow crashes and won't continue :S
+#c_print "White" "Dismiss previous starts..."
+#sudo $SCRIPT_ROOT/dismiss_netns_and_vpn.sh -p $SCRIPT_ROOT -n $NETNS
+#c_print "BGreen" "[DONE]"
 
 c_print "White" "Create NS ${NETNS}..."
 sudo ip netns add $NETNS
@@ -113,7 +114,7 @@ sudo iptables -t nat -A POSTROUTING -s 172.16.1.0/24 -j MASQUERADE
 c_print "BGreen" "[DONE]"
 
 
-c_print "White" "Start transmission with config-dir $HOME/.config/transmission-daemon..."
+c_print "White" "Start transmission with config-dir ${TRANSMISSION_DIR}..."
 sudo ip netns exec $NETNS transmission-daemon --config-dir $TRANSMISSION_DIR
 c_print "BGreen" "[DONE]"
 

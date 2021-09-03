@@ -32,6 +32,29 @@ Add the following line to `/etc/crontab` as root
 ```
 Update path if required!
 
+# Disable the original transmission-daemon to start at boot
+```
+sudo systemctl disable transmission-daemon
+```
+Also edit `/etc/default/transmission-daemon` and change the line
+```
+ENABLE_DAEMON=1
+```
+to
+```
+ENABLE_DAEMON=0
+
+```
+
+Then, reboot your machine and see if everything works as expected.
+
+The best way to check this is to run the script first manually, ensure it is running in the namespace.
+Then, add a torrent. For instance, the checkIP torrent in this repo.
+Then, reboot your machine. 
+After it boots up, and you can connect to the transmission-daemon and the added torrent is still there, you have configured everything correctly.
+If there is no added torrent, it means you connected to another instance, which might not be running within the namespace, i.e., not running behind a VPN.
+
+
 ## Troubleshooting
 Some full-fledged distributions trying to take over the control from you, like Ubuntu-based ones, like to mess up with your settings. 
 It means that your `NetworkManager` and/or the `systemd/system-resolved` services can mess up your DNS configuration found in `/etc/resolv.conf`.
