@@ -1,14 +1,21 @@
 # torrentns
-Scripts for firing up linux network namespace and run transmission server and openvpn within it.
+Scripts for firing up a linux network namespace and run transmission server with openvpn inside.
 
 # Before usage
-Update source/extra.sh to specify different constant variables
+Update `source/extra.sh` to specify different constant variables if we want to use different ones.
+They are in the first couple of lines of `extra.sh`.
+```
+#const variables, we don't have to change their values
+VETH_ROOT=veth_root
+VETH_NS=veth_ns
+BRIDGE=netns_bridge
+```
 
-# Bootstrap
-Run `./bootstrap.sh` to install the necessary dependencies
+# Installing dependencies
+Run `./bootstrap.sh` to install the necessary dependencies.
 
 # For VPN
-Create an `auth.txt` in the SCRIPT_ROOT as well as in SCRIPT_ROOT/nordVPN to make sure.
+Create an `auth.txt` in the `$SCRIPT_ROOT` as well as in `$SCRIPT_ROOT/nordVPN` to be sure.
 This file should contain your nordVPN username and password; each in one line below each other and nothing else, e.g.:
 ```
 myNordVPNuser
@@ -24,11 +31,28 @@ NAMESPACE will be `torrent`, SCRIPT_ROOT will be `$HOME/torrentns`, and TRANSMIS
 # Set your own transmission preferences 
 via copying the `transmission_config` to `$HOME/.config/transmission-daemon/`
 
+# Disable default transmission daemon to start
+We need to disable default transmission daemon to start, otherwise it messes up with our configuration.
+Edit the file `/etc/default/transmission-daemon` and change the following:
+```
+ENABLE_DAEMON=1
+```
+to this:
+```
+ENABLE_DAEMON=0
+```
+
+Sometimes the above not works, so we have to completely eliminate transmission-daemon to start!
+First, try this:
+```
+systemctl disable transmission-daemon
+```
+If, for any reason, it still does not work, get rid of all transmission-daemon related services from `/etc/rc*.d/` by removing the relevant files.
 
 # Add script to run on RaspberryPI/Debian/Ubuntu/OtherLinuxDistros after system boots
-Add the following line to `/etc/crontab` as root
+Add the following line to `/etc/crontab` as root assuming your `$SCRIPT_ROOT` is under your user's HOME directory.
 ```
-@reboot  root cd /home/ryzen/torrentns && /home/<YOURUSER>/torrentns/run_torrent_ns.sh -p <SCRIPT_ROOT> -n <NAMESPACE> -t <TRANSMISSION_CONFIG> &
+@reboot  root cd /home/<YOURUSER>/torrentns && /home/<YOURUSER>/torrentns/run_torrent_ns.sh -p /home/<YOURUSER>/torrentns -n <NAMESPACE> -t /home/<YOURUSER>/.config/transmission-daemon &
 ```
 Update path if required!
 
