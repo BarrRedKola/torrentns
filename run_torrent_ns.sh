@@ -107,6 +107,12 @@ sudo ip netns exec $NETNS ip route add default via 172.16.1.1
 sudo ifconfig $VETH_ROOT up
 c_print "BGreen" "[DONE]"
 
+c_print "White" "Add custom resolv.conf for google/cloudflare for ${NETNS}...it cannot use local one as ${NETNS} is in a VPN"
+sudo mkdir -p /etc/netns/${NETNS}
+sudo echo "nameserver 1.1.1.1" | sudo tee /etc/netns/${NETNS}/resolv.conf
+sudo echo "nameserver 8.8.8.8" | sudo tee -a /etc/netns/${NETNS}/resolv.conf
+c_print "BGreen" "[DONE]"
+
 
 c_print "White" "Add internet access to the bridge/namespaces..."
 sudo echo 1 |sudo tee /proc/sys/net/ipv4/ip_forward
@@ -123,9 +129,9 @@ sudo socat tcp-listen:9091,reuseaddr,fork tcp-connect:172.16.1.100:9091 &
 c_print "BGreen" "[DONE]"
 
 
-c_print "White" "Add 1.1.1.1 to /etc/resolv.conf otherwise namespace  $NETNS does not have domain resolution..."
-sudo echo "nameserver 1.1.1.1" |sudo tee -a /etc/resolv.conf
-c_print "BGreen" "[DONE]"
+#c_print "White" "Add 1.1.1.1 to /etc/resolv.conf otherwise namespace  $NETNS does not have domain resolution..."
+#sudo echo "nameserver 1.1.1.1" |sudo tee -a /etc/resolv.conf
+#c_print "BGreen" "[DONE]"
 
 
 c_print "White" "Start openvpn connection!"
