@@ -80,6 +80,13 @@ If there is no added torrent, it means you connected to another instance, which 
 
 
 ## Troubleshooting
+There is no reason to worry about the DNS anymore. You can use your local DNS for your host, and the network namespace (connected to a VPN and being obviously outside of your local scope) can freely use another one.
+
+All network namespaces use the host path `/etc/netns/<NAMESPACE>/` as their source of configuration files.
+Hence, the script is modified to create this directory and puts the relevant lines into a `resolv.conf` file there. 
+Just use the script as normal and this DNS-related setting is not an issue anymore.
+
+### SECTIN BELOW IS DEPRECATED BUT LEFT AS REFERENCE
 Some full-fledged distributions trying to take over the control from you, like Ubuntu-based ones, like to mess up with your settings. 
 It means that your `NetworkManager` and/or the `systemd/system-resolved` services can mess up your DNS configuration found in `/etc/resolv.conf`.
 What this means is that the system uses its own stub resolver, not that there is anything wrong with that BUT, which can be found at `127.0.0.53`.
