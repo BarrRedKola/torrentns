@@ -79,22 +79,25 @@ After it boots up, and you can connect to the transmission-daemon and the added 
 If there is no added torrent, it means you connected to another instance, which might not be running within the namespace, i.e., not running behind a VPN.
 
 
-## Troubleshooting
+# Troubleshooting
 There is no reason to worry about the DNS anymore. You can use your local DNS for your host, and the network namespace (connected to a VPN and being obviously outside of your local scope) can freely use another one.
 
 All network namespaces use the host path `/etc/netns/<NAMESPACE>/` as their source of configuration files.
 Hence, the script is modified to create this directory and puts the relevant lines into a `resolv.conf` file there. 
 Just use the script as normal and this DNS-related setting is not an issue anymore.
 
-### SECTIN BELOW IS DEPRECATED BUT LEFT AS REFERENCE
-Some full-fledged distributions trying to take over the control from you, like Ubuntu-based ones, like to mess up with your settings. 
-It means that your `NetworkManager` and/or the `systemd/system-resolved` services can mess up your DNS configuration found in `/etc/resolv.conf`.
-What this means is that the system uses its own stub resolver, not that there is anything wrong with that BUT, which can be found at `127.0.0.53`.
-This works totally fine for your system, but within the network namespace, this stub resolver cannot be reached! Therefore, since the network namespace also gets the DNS server data from `/etc/resolv.conf`, you end up not having domain name resulution within the namespace.
+## SECTION BELOW IS DEPRECATED BUT LEFT AS REFERENCE
+Some full-fledged distributions,like Ubuntu-based ones, trying to take over the control over from you and like to mess up with your settings. 
+It is especially true when it comes to the good old nameserver settings via `/etc/resolv.conf`.
 
-Psssst, manually editing the file works until you reboot, but even if this script I wrote has a `nameserver 1.1.1.1` text, which it appends to /etc/resolv.conf, if the script is set to run after reboot, your `NetworkManager` and/or `systemd/system-resolved` service may overwrite it.
+Your `NetworkManager` and/or the `systemd/system-resolved` services can mess up your DNS configuration found in `/etc/resolv.conf`.
+What this means is that the system uses its own stub resolver; not that there is anything wrong with that BUT, it can be found at `127.0.0.53`.
+This works totally fine for your system, but within the network namespace, this stub resolver cannot be reached easily as it is using a VPN anyway! 
+Therefore, since the network namespace also gets the DNS server data from `/etc/resolv.conf`, you end up not having domain name resulution within the namespace, which practically leads to no internet access within the namespace.
 
-### Enough said! What is the solution!
+Worse, manually editing the file works until you reboot; if the script is set to run after reboot, your `NetworkManager` and/or `systemd/system-resolved` service may overwrite it.
+
+### Solution
 Add your nameservers to `/etc/resolvconf/resolv.conf.d/tail`!
 ```
 nameserver 1.1.1.1
